@@ -1,2 +1,4 @@
 .vs/
 Backend/app/credentials/
+*.json
+.env
