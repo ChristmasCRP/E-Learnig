@@ -3,3 +3,7 @@ Backend/app/credentials/
 *.json
 .env
 Backend/app/credentials/firebase_credentials.json
+__pycache__/
+*.pyc
+venv/
+.venv/
