@@ -67,7 +67,7 @@ async def handle_chat_request(request: ChatRequest):
 
     try:
         response = openai.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4",
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": request.prompt}
