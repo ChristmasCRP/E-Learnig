@@ -4,49 +4,72 @@ from app.firebase import db
 
 router = APIRouter()
 
+ADMIN_AUTH_TOKEN = "sekretny-klucz-admina-123"
+
+
 class Course(BaseModel):
     title: str
-    description: str
     author: str
+    section_one: str
+    section_two: str
+    video_url: str
+
+class CourseInDB(Course):
+    id: str
+
+
+def verify_admin_token(request: Request):
+    """Pomocnicza funkcja do weryfikacji tokena admina"""
+    auth_header = request.headers.get("Authorization")
+    expected_header_value = f"Bearer {ADMIN_AUTH_TOKEN}"
+    if auth_header != expected_header_value:
+        raise HTTPException(status_code=403, detail="Permission denied. Invalid or missing token.")
 
 @router.get("/courses")
 def get_courses():
+    """Zwraca listę wszystkich kursów z pełnymi danymi."""
     docs = db.collection("courses").stream()
-    return [doc.to_dict() | {"id": doc.id} for doc in docs]
+    course_list = []
+    for doc in docs:
+        course_data = doc.to_dict()
+        course_data["id"] = doc.id
+        course_list.append(course_data)
+    return course_list
 
-@router.get("/courses/{course_id}")
+@router.get("/courses/{course_id}", response_model=CourseInDB)
 def get_course(course_id: str):
-    doc = db.collection("courses").document(course_id).get()
+    """Zwraca pełne dane jednego, konkretnego kursu."""
+    doc_ref = db.collection("courses").document(course_id)
+    doc = doc_ref.get()
     if doc.exists:
-        return doc.to_dict() | {"id": doc.id}
+        course_data = doc.to_dict()
+        course_data["id"] = doc.id
+        return course_data
     raise HTTPException(status_code=404, detail="Course not found")
 
-@router.post("/courses")
+@router.post("/courses", status_code=201)
 def add_course(course: Course, request: Request):
-    role = request.headers.get("X-User-Role")
-    if role != "admin":
-        raise HTTPException(status_code=403, detail="Permission denied")
+    """Dodaje nowy kurs. Wymaga danych w nowym, płaskim formacie."""
+    verify_admin_token(request)  
     db.collection("courses").add(course.dict())
-    return {"message": "Course added"}
+    return {"message": "Course added successfully"}
 
 @router.put("/courses/{course_id}")
 def update_course(course_id: str, course: Course, request: Request):
-    role = request.headers.get("X-User-Role")
-    if role != "admin":
-        raise HTTPException(status_code=403, detail="Permission denied")
+    """Aktualizuje istniejący kurs."""
+    verify_admin_token(request)  
     doc_ref = db.collection("courses").document(course_id)
     if not doc_ref.get().exists:
         raise HTTPException(status_code=404, detail="Course not found")
     doc_ref.update(course.dict())
-    return {"message": "Course updated"}
+    return {"message": "Course updated successfully"}
 
 @router.delete("/courses/{course_id}")
 def delete_course(course_id: str, request: Request):
-    role = request.headers.get("X-User-Role")
-    if role != "admin":
-        raise HTTPException(status_code=403, detail="Permission denied")
+    """Usuwa kurs."""
+    verify_admin_token(request)  
     doc_ref = db.collection("courses").document(course_id)
     if not doc_ref.get().exists:
         raise HTTPException(status_code=404, detail="Course not found")
     doc_ref.delete()
-    return {"message": "Course deleted"}
+    return {"message": "Course deleted successfully"}

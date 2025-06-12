@@ -10,7 +10,7 @@ class LoginRequest(BaseModel):
 @router.post("/login")
 def login(data: LoginRequest):
     if data.username == "admin" and data.password == "admin":
-        return {"success": True, "role": "admin"}
+        return {"success": True, "authToken": "sekretny-klucz-admina-123"}
     elif data.username == "guest" and data.password == "guest":
         return {"success": True, "role": "guest"}
     else:
