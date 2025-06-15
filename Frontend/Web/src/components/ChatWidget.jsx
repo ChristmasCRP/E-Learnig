@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./ChatWidget.css";
+import { RiChatAiFill } from "react-icons/ri";
 
 function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
@@ -53,7 +54,7 @@ function ChatWidget() {
         </div>
       ) : (
         <button className="chat-toggle" onClick={() => setIsOpen(true)}>
-          💬
+        <RiChatAiFill size={24} color="White" />
         </button>
       )}
     </div>
