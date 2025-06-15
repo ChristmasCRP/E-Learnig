@@ -1,0 +1,33 @@
+.navbar-container {
+  width: 220px;
+  height: 100vh;
+  background-color: rgb(32, 32, 32);
+  border-right: 1px solid #ccc;
+  padding: 1rem;
+  box-sizing: border-box;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.navbar-title {
+  margin-bottom: 2rem;
+  color: #007bff;
+}
+
+.nav-item {
+  display: block;
+  padding: 1rem;
+  text-decoration: none;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.nav-item.active {
+  font-weight: bold;
+  color: #007bff;
+}
+
+.login-link {
+  cursor: pointer;
+}
