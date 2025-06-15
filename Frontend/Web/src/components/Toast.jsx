@@ -1,5 +1,5 @@
 import React from "react";
-import "./Notification.css";
+import "./Toast.css";
 
 function Toast({ message, visible }) {
   return (

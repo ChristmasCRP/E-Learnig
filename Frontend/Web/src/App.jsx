@@ -6,48 +6,42 @@ import ContactPage from "./pages/ContactPage";
 import NavigationBar from "./components/NavigationBar";
 import ChatWidget from "./components/ChatWidget";
 import LoginModal from "./components/LoginModal";
-import Notification from "./components/Notification";
+import Toast from "./components/Toast";
+
 
 function App() {
-  const [showLoginModal, setShowLoginModal] = useState(true);
-  const [authInfo, setAuthInfo] = useState(null); // { username, role, token }
-  const [notification, setNotification] = useState(null); // tekst komunikatu
+  const [userRole, setUserRole] = useState(null); // null, 'guest', 'admin'
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [toast, setToast] = useState({ message: "", visible: false });
 
   useEffect(() => {
-    // opcjonalnie można sprawdzić localStorage, aby utrzymać sesję
-    const savedAuth = sessionStorage.getItem("auth");
-    if (savedAuth) {
-      setAuthInfo(JSON.parse(savedAuth));
-      setShowLoginModal(false);
-    }
+    setShowLoginModal(true); // pokaż login przy pierwszym wejściu
   }, []);
 
-  const handleLogin = (info) => {
-    setAuthInfo(info);
-    sessionStorage.setItem("auth", JSON.stringify(info));
-    setNotification(
-      info.role === "guest"
-        ? "Kontynuujesz jako gość"
-        : "Zalogowano pomyślnie!"
-    );
-    setTimeout(() => setNotification(null), 3000);
+  const showToast = (msg) => {
+    setToast({ message: msg, visible: true });
+    setTimeout(() => setToast({ message: "", visible: false }), 3000);
   };
 
+  const handleLogin = (isAdmin) => {
+  setUserRole(isAdmin ? "admin" : "guest");
+  setShowLoginModal(false);
+  showToast(isAdmin ? "Zalogowano pomyślnie!" : "Kontynuujesz jako gość");
+};
+
   const handleLogout = () => {
-    setAuthInfo(null);
-    sessionStorage.removeItem("auth");
-    setNotification("Wylogowano pomyślnie");
-    setTimeout(() => setNotification(null), 3000);
+    setUserRole(null);
     setShowLoginModal(true);
+    showToast("Wylogowano pomyślnie.");
   };
 
   return (
     <Router>
       <div style={{ display: "flex" }}>
         <NavigationBar
+          userRole={userRole}
           onLoginClick={() => setShowLoginModal(true)}
-          onLogoutClick={handleLogout}
-          authInfo={authInfo}
+          onLogout={handleLogout}
         />
         <div style={{ marginLeft: "220px", padding: "2rem", flex: 1 }}>
           <Routes>
@@ -56,14 +50,14 @@ function App() {
             <Route path="/contact" element={<ContactPage />} />
           </Routes>
         </div>
-        <ChatWidget />
         <LoginModal
           isOpen={showLoginModal}
           onClose={() => setShowLoginModal(false)}
           onLogin={handleLogin}
         />
-        {notification && <Notification message={notification} />}
+        <Toast message={toast.message} visible={toast.visible} />
       </div>
+      <ChatWidget />
     </Router>
   );
 }
