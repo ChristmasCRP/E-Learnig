@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+pydantic
+firebase-admin
+openai
+# Pakiety do testowania
+pytest
+httpx
+pytest-mock
