@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
-import CoursesPage from "./pages/CoursesPage";
 import ContactPage from "./pages/ContactPage";
 import NavigationBar from "./components/NavigationBar";
 import ChatWidget from "./components/ChatWidget";
 import LoginModal from "./components/LoginModal";
 import Toast from "./components/Toast";
+import ToastConfirm from "./components/ToastConfirm";
 import CourseDetailsPage from "./pages/CourseDetailsPage";
 import EditCoursePage from "./pages/EditCoursePage";
 import AddCoursePage from "./pages/AddCoursePage";
-
-
-
+import CoursesPage from "./pages/CoursesPage"; // ✅ upewniamy się, że to poprawny import
 
 function App() {
   const [userRole, setUserRole] = useState(null);
@@ -20,14 +18,28 @@ function App() {
   const [toast, setToast] = useState({ message: "", visible: false });
   const [refreshCourses, setRefreshCourses] = useState(false);
 
-  useEffect(() => {
-    setShowLoginModal(true);
-  }, []);
+  const [confirmVisible, setConfirmVisible] = useState(false);
+  const [confirmMessage, setConfirmMessage] = useState("");
+  const [onConfirm, setOnConfirm] = useState(() => () => {});
 
   const showToast = (msg) => {
     setToast({ message: msg, visible: true });
     setTimeout(() => setToast({ message: "", visible: false }), 3000);
   };
+
+  const showConfirm = (message, confirmCallback) => {
+    console.log("CUSTOM CONFIRM fired"); // ✅ dla debugowania
+    setConfirmMessage(message);
+    setOnConfirm(() => () => {
+      confirmCallback();
+      setConfirmVisible(false);
+    });
+    setConfirmVisible(true);
+  };
+
+  useEffect(() => {
+    setShowLoginModal(true);
+  }, []);
 
   const handleLogin = (isAdmin) => {
     setUserRole(isAdmin ? "admin" : "guest");
@@ -56,7 +68,17 @@ function App() {
         <div style={{ marginLeft: "220px", padding: "2rem", flex: 1 }}>
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/courses" element={<CoursesPage refreshTrigger={refreshCourses} />} />
+            <Route
+              path="/courses"
+              element={
+                <CoursesPage
+                  refreshTrigger={refreshCourses}
+                  showToast={showToast}
+                  showConfirm={showConfirm}
+                  triggerCoursesRefresh={triggerCoursesRefresh}
+                />
+              }
+            />
             <Route path="/courses/:id" element={<CourseDetailsPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/courses/:id/edit" element={<EditCoursePage />} />
@@ -69,8 +91,17 @@ function App() {
           onClose={() => setShowLoginModal(false)}
           onLogin={handleLogin}
         />
+
         <Toast message={toast.message} visible={toast.visible} />
+
+        <ToastConfirm
+          visible={confirmVisible}
+          message={confirmMessage}
+          onConfirm={onConfirm}
+          onCancel={() => setConfirmVisible(false)}
+        />
       </div>
+
       <ChatWidget />
     </Router>
   );

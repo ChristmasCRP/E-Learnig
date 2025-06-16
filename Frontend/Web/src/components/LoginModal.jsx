@@ -85,9 +85,6 @@ function LoginModal({ isOpen, onClose, onLogin }) {
             Zaloguj się
           </button>
         </div>
-        <div className="modal-footer">
-          <button onClick={onClose} className="modal-close">Zamknij</button>
-        </div>
       </div>
     </div>
   );

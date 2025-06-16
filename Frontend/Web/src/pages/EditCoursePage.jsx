@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import "./CourseForm.css";
 
 function EditCoursePage() {
   const { id } = useParams();
@@ -30,11 +31,33 @@ function EditCoursePage() {
     setCourse((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleSectionChange = (index, field, value) => {
+    const updatedSections = [...course.sections];
+    updatedSections[index][field] = value;
+    setCourse((prev) => ({ ...prev, sections: updatedSections }));
+  };
+
+  const addSection = () => {
+    setCourse((prev) => ({
+      ...prev,
+      sections: [...(prev.sections || []), { number: "", title: "", content: "" }],
+    }));
+  };
+
+  const removeSection = (index) => {
+    const updatedSections = [...course.sections];
+    updatedSections.splice(index, 1);
+    setCourse((prev) => ({ ...prev, sections: updatedSections }));
+  };
+
   const handleSave = () => {
     setSaving(true);
     fetch(`http://localhost:8000/courses/${id}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("authToken") || ""}`,
+      },
       body: JSON.stringify(course),
     })
       .then((res) => {
@@ -52,54 +75,58 @@ function EditCoursePage() {
   if (!course) return null;
 
   return (
-    <div style={{ maxWidth: "600px", margin: "0 auto" }}>
-      <h1 style={{ fontSize: "1.8rem", marginBottom: "1rem" }}>Edytuj kurs</h1>
-
-      <label style={{ display: "block", marginBottom: "0.5rem" }}>
+    <div className="course-form-container">
+      <h1>Edytuj kurs</h1>
+      <label>
         Tytuł:
-        <input
-          type="text"
-          name="title"
-          value={course.title}
-          onChange={handleChange}
-          style={{ width: "100%", padding: "0.5rem", marginTop: "0.3rem" }}
-        />
+        <input type="text" name="title" value={course.title} onChange={handleChange} />
       </label>
-
-      <label style={{ display: "block", marginBottom: "0.5rem" }}>
+      <label>
         Autor:
-        <input
-          type="text"
-          name="author"
-          value={course.author}
-          onChange={handleChange}
-          style={{ width: "100%", padding: "0.5rem", marginTop: "0.3rem" }}
-        />
+        <input type="text" name="author" value={course.author} onChange={handleChange} />
+      </label>
+      <label>
+        URL filmu:
+        <input type="text" name="video_url" value={course.video_url || ""} onChange={handleChange} />
       </label>
 
-      <label style={{ display: "block", marginBottom: "0.5rem" }}>
-        Opis:
-        <textarea
-          name="description"
-          value={course.description || ""}
-          onChange={handleChange}
-          rows="4"
-          style={{ width: "100%", padding: "0.5rem", marginTop: "0.3rem" }}
-        />
-      </label>
+      <h3>Sekcje:</h3>
+      {course.sections?.map((section, index) => (
+        <div key={index} className="section-box">
+          <label>
+            Numer:
+            <input
+              type="text"
+              value={section.number}
+              onChange={(e) => handleSectionChange(index, "number", e.target.value)}
+            />
+          </label>
+          <label>
+            Tytuł:
+            <input
+              type="text"
+              value={section.title}
+              onChange={(e) => handleSectionChange(index, "title", e.target.value)}
+            />
+          </label>
+          <label>
+            Treść:
+            <textarea
+              rows="3"
+              value={section.content}
+              onChange={(e) => handleSectionChange(index, "content", e.target.value)}
+            />
+          </label>
+          <button type="button" onClick={() => removeSection(index)}>
+            ❌ Usuń sekcję
+          </button>
+        </div>
+      ))}
 
-      <button
-        onClick={handleSave}
-        disabled={saving}
-        style={{
-          padding: "0.6rem 1.2rem",
-          backgroundColor: "#007bff",
-          color: "white",
-          border: "none",
-          borderRadius: "4px",
-          cursor: "pointer",
-        }}
-      >
+      <button type="button" onClick={addSection}>
+        ➕ Dodaj sekcję
+      </button>
+      <button onClick={handleSave} disabled={saving}>
         {saving ? "Zapisywanie..." : "Zapisz zmiany"}
       </button>
     </div>

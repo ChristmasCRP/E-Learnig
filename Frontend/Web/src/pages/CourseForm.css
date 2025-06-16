@@ -1,0 +1,71 @@
+.course-form-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: #1e1e1e;
+  color: white;
+  border-radius: 10px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.course-form-container h1,
+.course-form-container h2,
+.course-form-container h3,
+.course-form-container h4 {
+  margin-bottom: 1rem;
+}
+
+.course-form-container input,
+.course-form-container textarea {
+  width: 100%;
+  padding: 0.6rem;
+  margin: 0.5rem 0 1rem;
+  border: 1px solid #555;
+  border-radius: 5px;
+  background-color: #2a2a2a;
+  color: white;
+  box-sizing: border-box;
+}
+
+.course-form-container button {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.course-form-container .add-section-btn {
+  background-color: #444;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.course-form-container .save-btn {
+  background-color: #28a745;
+  color: white;
+}
+
+.course-form-container .section-box {
+  border: 1px solid #444;
+  background-color: #2a2a2a;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+}
+
+.course-form-container .remove-section-btn {
+  background-color: #8b0000;
+  color: white;
+  margin-top: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .course-form-container {
+    padding: 1rem;
+  }
+  .course-form-container .section-box {
+    padding: 1rem 0.5rem;
+  }
+}

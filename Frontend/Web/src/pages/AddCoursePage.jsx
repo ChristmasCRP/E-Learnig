@@ -1,103 +1,115 @@
 import React, { useState } from "react";
+import "./CourseForm.css";
 
 function AddCoursePage() {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
-  const [sections, setSections] = useState([""]);
+  const [sections, setSections] = useState([{ number: "1", title: "", content: "" }]);
 
-  const handleSectionChange = (index, value) => {
+  const handleSectionChange = (index, field, value) => {
     const newSections = [...sections];
-    newSections[index] = value;
+    newSections[index][field] = value;
     setSections(newSections);
   };
 
   const addSection = () => {
-    setSections([...sections, ""]);
+    setSections([...sections, { number: String(sections.length + 1), title: "", content: "" }]);
   };
 
   const removeSection = (index) => {
-    const newSections = sections.filter((_, i) => i !== index);
-    setSections(newSections);
+    const updated = sections.filter((_, i) => i !== index).map((s, i) => ({
+      ...s,
+      number: String(i + 1),
+    }));
+    setSections(updated);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem("authToken");
-    const course = { title, author, video_url: videoUrl, sections };
+    const course = {
+      title,
+      author,
+      video_url: videoUrl,
+      sections,
+    };
 
     try {
       const response = await fetch("http://localhost:8000/courses", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(course)
+        body: JSON.stringify(course),
       });
 
       if (response.ok) {
-        alert("Kurs został dodany!");
+        alert("✅ Kurs został dodany!");
         setTitle("");
         setAuthor("");
         setVideoUrl("");
-        setSections([""]);
+        setSections([{ number: "1", title: "", content: "" }]);
       } else {
-        alert("Błąd przy dodawaniu kursu.");
+        const err = await response.json();
+        alert(`❌ Błąd: ${err.detail || "Nie udało się dodać kursu."}`);
       }
     } catch (error) {
       console.error("Błąd:", error);
+      alert("❌ Wystąpił błąd podczas dodawania kursu.");
     }
   };
 
   return (
-    <div>
-      <h2>Dodaj nowy kurs</h2>
-      <form onSubmit={handleSubmit} style={{ maxWidth: "600px" }}>
-        <input
-          type="text"
-          placeholder="Tytuł kursu"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          style={{ width: "100%", marginBottom: "1rem", padding: "0.5rem" }}
-          required
-        />
-        <input
-          type="text"
-          placeholder="Autor kursu"
-          value={author}
-          onChange={(e) => setAuthor(e.target.value)}
-          style={{ width: "100%", marginBottom: "1rem", padding: "0.5rem" }}
-          required
-        />
-        <input
-          type="text"
-          placeholder="Link do wideo"
-          value={videoUrl}
-          onChange={(e) => setVideoUrl(e.target.value)}
-          style={{ width: "100%", marginBottom: "1rem", padding: "0.5rem" }}
-        />
-        <h4>Sekcje:</h4>
+    <div className="course-form-container">
+      <h1>Dodaj nowy kurs</h1>
+      <form onSubmit={handleSubmit}>
+        <label>
+          Tytuł kursu:
+          <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required />
+        </label>
+        <label>
+          Autor kursu:
+          <input type="text" value={author} onChange={(e) => setAuthor(e.target.value)} required />
+        </label>
+        <label>
+          Link do wideo:
+          <input type="text" value={videoUrl} onChange={(e) => setVideoUrl(e.target.value)} />
+        </label>
+
+        <h3>Sekcje:</h3>
         {sections.map((section, index) => (
-          <div key={index} style={{ marginBottom: "0.5rem" }}>
-            <textarea
-              placeholder={`Sekcja ${index + 1}`}
-              value={section}
-              onChange={(e) => handleSectionChange(index, e.target.value)}
-              style={{ width: "100%", padding: "0.5rem" }}
-            />
+          <div key={index} className="section-box">
+            <label>
+              Tytuł sekcji:
+              <input
+                type="text"
+                value={section.title}
+                onChange={(e) => handleSectionChange(index, "title", e.target.value)}
+                required
+              />
+            </label>
+            <label>
+              Treść sekcji:
+              <textarea
+                value={section.content}
+                onChange={(e) => handleSectionChange(index, "content", e.target.value)}
+                required
+              />
+            </label>
             {sections.length > 1 && (
-              <button type="button" onClick={() => removeSection(index)} style={{ marginTop: "0.3rem" }}>
-                Usuń
+              <button type="button" onClick={() => removeSection(index)}>
+                ❌ Usuń sekcję
               </button>
             )}
           </div>
         ))}
-        <button type="button" onClick={addSection} style={{ marginBottom: "1rem" }}>
+
+        <button type="button" onClick={addSection}>
           ➕ Dodaj sekcję
         </button>
-        <br />
-        <button type="submit">Dodaj kurs</button>
+        <button type="submit">➕ Dodaj kurs</button>
       </form>
     </div>
   );

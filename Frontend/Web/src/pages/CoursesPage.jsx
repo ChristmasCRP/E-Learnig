@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-function CoursesPage({ refreshTrigger }) {
+function CoursesPage({
+  refreshTrigger,
+  showToast = () => {},
+  showConfirm = (msg, cb) => {
+    if (window.confirm(msg)) cb();
+  },
+  triggerCoursesRefresh = () => {},
+}) {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -25,6 +32,29 @@ function CoursesPage({ refreshTrigger }) {
   useEffect(() => {
     fetchCourses();
   }, [refreshTrigger]);
+
+  const handleDelete = async (courseId, courseTitle) => {
+    try {
+      const token = localStorage.getItem("authToken");
+      const response = await fetch(`http://localhost:8000/courses/${courseId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        const err = await response.json();
+        throw new Error(err.detail || "Błąd podczas usuwania kursu.");
+      }
+
+      showToast("✅ Kurs został usunięty.");
+      setCourses((prev) => prev.filter((c) => c.id !== courseId));
+      triggerCoursesRefresh();
+    } catch (error) {
+      showToast("❌ " + error.message);
+    }
+  };
 
   return (
     <div>
@@ -84,7 +114,11 @@ function CoursesPage({ refreshTrigger }) {
                       ✏️ Edytuj
                     </Link>
                     <button
-                      onClick={() => alert(`Potwierdź usunięcie kursu "${course.title}" (placeholder)`)}
+                      onClick={() =>
+                        showConfirm(`Czy na pewno chcesz usunąć kurs "${course.title}"?`, () =>
+                          handleDelete(course.id, course.title)
+                        )
+                      }
                       style={{
                         background: "none",
                         border: "none",

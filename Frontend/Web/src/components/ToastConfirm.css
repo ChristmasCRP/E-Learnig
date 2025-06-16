@@ -1,0 +1,61 @@
+.toast-confirm {
+  position: fixed;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-20px);
+  background-color: #222;
+  color: white;
+  padding: 20px 24px;
+  border-radius: 8px;
+  opacity: 0;
+  transition: all 0.3s ease;
+  font-family: Arial, sans-serif;
+  z-index: 9999;
+  min-width: 280px;
+  max-width: 90%;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.toast-confirm.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.toast-confirm p {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+}
+
+.toast-confirm-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.toast-confirm-buttons button {
+  padding: 8px 16px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.toast-confirm-buttons button.confirm {
+  background-color: #dc3545;
+  color: white;
+}
+
+.toast-confirm-buttons button.confirm:hover {
+  background-color: #b02a37;
+}
+
+.toast-confirm-buttons button.cancel {
+  background-color: #6c757d;
+  color: white;
+}
+
+.toast-confirm-buttons button.cancel:hover {
+  background-color: #5a6268;
+}
