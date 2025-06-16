@@ -7,10 +7,15 @@ router = APIRouter()
 ADMIN_AUTH_TOKEN = "sekretny-klucz-admina-123"
 
 
+class Section(BaseModel):
+    number: str
+    title: str
+    content: str
+
 class Course(BaseModel):
     title: str
     author: str
-    sections: list[str]
+    sections: list[Section]
     video_url: str
 
 class CourseInDB(Course):
@@ -50,7 +55,7 @@ def get_course(course_id: str):
 def add_course(course: Course, request: Request):
     """Dodaje nowy kurs. Wymaga danych w nowym, płaskim formacie."""
     verify_admin_token(request)  
-    db.collection("courses").add(course.dict())
+    db.collection("courses").add(course.model_dump())
     return {"message": "Course added successfully"}
 
 @router.put("/courses/{course_id}")
@@ -60,7 +65,7 @@ def update_course(course_id: str, course: Course, request: Request):
     doc_ref = db.collection("courses").document(course_id)
     if not doc_ref.get().exists:
         raise HTTPException(status_code=404, detail="Course not found")
-    doc_ref.update(course.dict())
+    doc_ref.update(course.model_dump())
     return {"message": "Course updated successfully"}
 
 @router.delete("/courses/{course_id}")
