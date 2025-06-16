@@ -2,17 +2,25 @@
 from fastapi.testclient import TestClient
 from unittest.mock import MagicMock, patch
 
-# --- ZAKTUALIZOWANE DANE TESTOWE ---
 
-# Dane, które wysyłamy do API, aby stworzyć kurs (bez ID)
 FAKE_COURSE_DATA = {
-    "title": "Testowy Kurs 1",
-    "author": "Jan Kowalski",
-    "sections": ["Treść 1", "Treść 2"],
-    "video_url": "http://example.com/video1"
+    "title": "Nowy Kurs o Pydantic",
+    "author": "Eryk Pydant",
+    "sections": [
+        {
+            "number": "1.1",
+            "title": "Wprowadzenie do modeli",
+            "content": "Tutaj znajduje się treść pierwszej sekcji kursu."
+        },
+        {
+            "number": "1.2",
+            "title": "Zaawansowana walidacja",
+            "content": "Opisujemy zaawansowane techniki walidacji danych."
+        }
+    ],
+    "video_url": "http://example.com/new-video"
 }
 
-# Dane reprezentujące kurs, który już istnieje w bazie danych (z ID)
 FAKE_COURSE_IN_DB = {
     "id": "course1",
     **FAKE_COURSE_DATA
@@ -24,9 +32,10 @@ AUTH_HEADER = {"Authorization": f"Bearer {ADMIN_TOKEN}"}
 
 @patch("app.routes.courses.db")
 def test_get_courses(mock_db: MagicMock, client: TestClient):
-    """Testuje pobieranie wszystkich kursów."""
+    """Testuje pobieranie wszystkich kursów z nową strukturą."""
     mock_doc = MagicMock()
     mock_doc.id = "course1"
+   
     mock_doc.to_dict.return_value = FAKE_COURSE_DATA.copy()
     mock_db.collection.return_value.stream.return_value = [mock_doc]
 
@@ -35,29 +44,29 @@ def test_get_courses(mock_db: MagicMock, client: TestClient):
     assert response.status_code == 200
     data = response.json()
     assert len(data) == 1
-    # Sprawdzamy, czy odpowiedź pasuje do struktury kursu w bazie
+
     assert data[0] == FAKE_COURSE_IN_DB
     mock_db.collection.assert_called_with("courses")
 
 @patch("app.routes.courses.db")
 def test_add_course_success(mock_db: MagicMock, client: TestClient):
-    """Testuje dodawanie kursu przez admina."""
+    """Testuje dodawanie kursu z nową strukturą przez admina."""
     response = client.post(
         "/courses",
-        json=FAKE_COURSE_DATA,  # Wysyłamy dane bez ID
+        json=FAKE_COURSE_DATA,  
         headers=AUTH_HEADER
     )
 
     assert response.status_code == 201
     assert response.json() == {"message": "Course added successfully"}
 
-    # Sprawdzamy, czy do bazy danych zostały wysłane dane BEZ ID
+
     mock_db.collection.return_value.add.assert_called_once_with(FAKE_COURSE_DATA)
 
 @patch("app.routes.courses.db")
 def test_add_course_unauthorized(mock_db: MagicMock, client: TestClient):
-    """Testuje próbę dodania kursu bez autoryzacji."""
-    # Wysyłamy poprawne dane, ale bez nagłówka autoryzacji
+    """Testuje próbę dodania kursu z nową strukturą bez autoryzacji."""
+
     response = client.post("/courses", json=FAKE_COURSE_DATA)
     
     assert response.status_code == 403
