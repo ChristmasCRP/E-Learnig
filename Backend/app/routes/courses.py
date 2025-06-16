@@ -7,10 +7,15 @@ router = APIRouter()
 ADMIN_AUTH_TOKEN = "sekretny-klucz-admina-123"
 
 
+class Section(BaseModel):
+    number: str
+    title: str
+    content: str
+
 class Course(BaseModel):
     title: str
     author: str
-    sections: list[str]
+    sections: list[Section]
     video_url: str
 
 class CourseInDB(Course):
