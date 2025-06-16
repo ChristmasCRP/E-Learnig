@@ -10,8 +10,7 @@ ADMIN_AUTH_TOKEN = "sekretny-klucz-admina-123"
 class Course(BaseModel):
     title: str
     author: str
-    section_one: str
-    section_two: str
+    sections: list[str]
     video_url: str
 
 class CourseInDB(Course):

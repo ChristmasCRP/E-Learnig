@@ -29,13 +29,18 @@ function LoginModal({ isOpen, onClose, onLogin }) {
 
       if (response.ok) {
         const result = await response.json();
+
         if (result.authToken) {
+          localStorage.setItem("authToken", result.authToken);
           onLogin(true); // admin
         } else if (result.role === "guest") {
+          localStorage.removeItem("authToken");
           onLogin(false); // gość
         } else {
+          localStorage.removeItem("authToken");
           onLogin(false);
         }
+
         onClose();
       } else {
         setErrorMsg("Błędny login lub hasło.");

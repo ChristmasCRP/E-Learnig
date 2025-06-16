@@ -6,9 +6,6 @@ function NavigationBar({
   userRole,
   onLoginClick,
   onLogout,
-  onAddCourseClick,
-  onEditCourseClick,
-  onDeleteCourseClick,
 }) {
   const location = useLocation();
 
@@ -33,19 +30,9 @@ function NavigationBar({
         )}
 
         {isAdmin && (
-          <>
-            <span onClick={onLogout} className="nav-item login-link">
-              Wyloguj się (admin)
-            </span>
-
-            <div className="admin-menu">
-              <hr />
-              <p style={{ fontWeight: "bold", marginBottom: "0.5rem" }}>Admin</p>
-              <span onClick={onAddCourseClick} className="nav-item">➕ Dodaj kurs</span>
-              <span onClick={onEditCourseClick} className="nav-item">✏️ Edytuj kurs</span>
-              <span onClick={onDeleteCourseClick} className="nav-item">❌ Usuń kurs</span>
-            </div>
-          </>
+          <span onClick={onLogout} className="nav-item login-link">
+            Wyloguj się (admin)
+          </span>
         )}
       </nav>
     </div>
