@@ -6,6 +6,8 @@ function NavigationBar({
   userRole,
   onLoginClick,
   onLogout,
+  toggleTheme,
+  currentTheme,
 }) {
   const location = useLocation();
 
@@ -17,7 +19,23 @@ function NavigationBar({
 
   return (
     <div className="navbar-container">
-      <h2 className="navbar-title">Karp-Learning</h2>
+      <div className="navbar-top">
+        <h2 className="navbar-title">Karp-Learning</h2>
+
+        {/* 🌗 Suwak motywu */}
+        <div className="theme-toggle">
+          <input
+            type="checkbox"
+            id="themeSwitch"
+            checked={currentTheme === "light"}
+            onChange={toggleTheme}
+          />
+          <label htmlFor="themeSwitch" className="switch">
+            <span className="slider"></span>
+          </label>
+        </div>
+      </div>
+
       <nav>
         <Link to="/" className={getLinkClass("/")}>Strona główna</Link>
         <Link to="/courses" className={getLinkClass("/courses")}>Kursy</Link>

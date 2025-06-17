@@ -10,7 +10,8 @@ import ToastConfirm from "./components/ToastConfirm";
 import CourseDetailsPage from "./pages/CourseDetailsPage";
 import EditCoursePage from "./pages/EditCoursePage";
 import AddCoursePage from "./pages/AddCoursePage";
-import CoursesPage from "./pages/CoursesPage"; // ✅ upewniamy się, że to poprawny import
+import CoursesPage from "./pages/CoursesPage";
+import "./themes.css"; // ✅ dodajemy style motywów
 
 function App() {
   const [userRole, setUserRole] = useState(null);
@@ -22,13 +23,24 @@ function App() {
   const [confirmMessage, setConfirmMessage] = useState("");
   const [onConfirm, setOnConfirm] = useState(() => () => {});
 
+  // 🌓 Motyw
+  const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "dark");
+
+  useEffect(() => {
+    document.body.className = theme;
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+  };
+
   const showToast = (msg) => {
     setToast({ message: msg, visible: true });
     setTimeout(() => setToast({ message: "", visible: false }), 3000);
   };
 
   const showConfirm = (message, confirmCallback) => {
-    console.log("CUSTOM CONFIRM fired"); // ✅ dla debugowania
     setConfirmMessage(message);
     setOnConfirm(() => () => {
       confirmCallback();
@@ -64,6 +76,8 @@ function App() {
           userRole={userRole}
           onLoginClick={() => setShowLoginModal(true)}
           onLogout={handleLogout}
+          toggleTheme={toggleTheme} // 🌓 przekazujemy przełącznik
+          currentTheme={theme}
         />
         <div style={{ marginLeft: "220px", padding: "2rem", flex: 1 }}>
           <Routes>

@@ -1,0 +1,92 @@
+.courses-container {
+  padding: 2rem;
+  color: var(--text-color);
+}
+
+.courses-title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.add-course-button {
+  padding: 0.5rem 1rem;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.add-course-button:hover {
+  background-color: var(--primary-hover);
+}
+
+.course-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.course-item {
+  margin-bottom: 1rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.course-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.course-link {
+  font-weight: bold;
+  font-size: 1.1rem;
+  text-decoration: none;
+  color: var(--link-color);
+  transition: color 0.2s;
+}
+
+.course-link:hover {
+  color: var(--link-hover-color);
+}
+
+.course-author {
+  margin: 0.2rem 0;
+  color: var(--text-color);
+  opacity: 0.7;
+}
+
+.course-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+
+.edit-link {
+  color: orange;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.edit-link:hover {
+  text-decoration: underline;
+}
+
+.delete-button {
+  background: none;
+  border: none;
+  color: red;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.delete-button:hover {
+  text-decoration: underline;
+}

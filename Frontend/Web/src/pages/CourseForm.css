@@ -2,8 +2,8 @@
   max-width: 1000px;
   margin: 0 auto;
   padding: 2rem;
-  background-color: #1e1e1e;
-  color: white;
+  background-color: var(--card-bg);
+  color: var(--card-text);
   border-radius: 10px;
   box-sizing: border-box;
   width: 100%;
@@ -21,10 +21,10 @@
   width: 100%;
   padding: 0.6rem;
   margin: 0.5rem 0 1rem;
-  border: 1px solid #555;
+  border: 1px solid var(--border-color);
   border-radius: 5px;
-  background-color: #2a2a2a;
-  color: white;
+  background-color: var(--soft-background);
+  color: var(--text-color);
   box-sizing: border-box;
 }
 
@@ -37,8 +37,8 @@
 }
 
 .course-form-container .add-section-btn {
-  background-color: #444;
-  color: white;
+  background-color: var(--accent-color);
+  color: var(--card-text);
   margin-bottom: 1rem;
 }
 
@@ -48,11 +48,12 @@
 }
 
 .course-form-container .section-box {
-  border: 1px solid #444;
-  background-color: #2a2a2a;
+  border: 1px solid var(--border-color);
+  background-color: var(--soft-background);
   padding: 1rem;
   margin-bottom: 1.5rem;
   border-radius: 8px;
+  color: var(--text-color);
 }
 
 .course-form-container .remove-section-btn {
@@ -65,6 +66,7 @@
   .course-form-container {
     padding: 1rem;
   }
+
   .course-form-container .section-box {
     padding: 1rem 0.5rem;
   }

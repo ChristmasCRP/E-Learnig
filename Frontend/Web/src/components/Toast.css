@@ -3,14 +3,15 @@
   top: 30px;
   left: 50%;
   transform: translateX(-50%) translateY(-20px);
-  background-color: #333;
-  color: white;
+  background-color: var(--toast-bg);
+  color: var(--toast-text);
   padding: 12px 20px;
   border-radius: 6px;
   opacity: 0;
   transition: all 0.3s ease;
   font-family: Arial, sans-serif;
   z-index: 9999;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .toast.show {

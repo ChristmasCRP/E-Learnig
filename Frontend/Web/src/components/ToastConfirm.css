@@ -3,8 +3,8 @@
   top: 30px;
   left: 50%;
   transform: translateX(-50%) translateY(-20px);
-  background-color: #222;
-  color: white;
+  background-color: var(--card-bg);
+  color: var(--card-text);
   padding: 20px 24px;
   border-radius: 8px;
   opacity: 0;
@@ -43,19 +43,19 @@
 }
 
 .toast-confirm-buttons button.confirm {
-  background-color: #dc3545;
+  background-color: var(--danger-color);
   color: white;
 }
 
 .toast-confirm-buttons button.confirm:hover {
-  background-color: #b02a37;
+  background-color: var(--danger-hover);
 }
 
 .toast-confirm-buttons button.cancel {
-  background-color: #6c757d;
-  color: white;
+  background-color: var(--secondary-color);
+  color: var(--text-color);
 }
 
 .toast-confirm-buttons button.cancel:hover {
-  background-color: #5a6268;
+  background-color: var(--secondary-hover);
 }

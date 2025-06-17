@@ -6,7 +6,7 @@
 }
 
 .chat-toggle {
-  background-color: #007bff;
+  background-color: var(--primary-color);
   color: white;
   border: none;
   border-radius: 50%;
@@ -21,11 +21,11 @@
   padding: 0;
 }
 
-
 .chat-box {
   width: 300px;
   height: 350px;
-  background: rgb(32, 32, 32);
+  background: var(--card-bg);
+  color: var(--card-text);
   border-radius: 8px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.4);
   display: flex;
@@ -34,7 +34,7 @@
 }
 
 .chat-header {
-  background-color: #007bff;
+  background-color: var(--primary-color);
   color: white;
   padding: 10px;
   display: flex;
@@ -47,20 +47,21 @@
   padding: 10px;
   font-size: 0.95rem;
   overflow-y: auto;
-  border-top: 1px solid #ccc;
+  border-top: 1px solid var(--border-color);
 }
 
 .chat-response {
-  background: #1d1d1d;
+  background: var(--secondary-color);
   padding: 10px;
   border-radius: 6px;
   margin-bottom: 10px;
   white-space: pre-wrap;
+  color: var(--text-color);
 }
 
 .chat-footer {
   display: flex;
-  border-top: 1px solid #ccc;
+  border-top: 1px solid var(--border-color);
 }
 
 .chat-footer input {
@@ -69,10 +70,12 @@
   border: none;
   outline: none;
   font-size: 0.95rem;
+  background-color: var(--soft-background);
+  color: var(--text-color);
 }
 
 .chat-footer button {
-  background-color: #007bff;
+  background-color: var(--primary-color);
   color: white;
   border: none;
   padding: 0 15px;

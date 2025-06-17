@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import "./CoursesPage.css";
 
 function CoursesPage({
   refreshTrigger,
@@ -57,21 +58,13 @@ function CoursesPage({
   };
 
   return (
-    <div>
-      <h1 style={{ fontSize: "2rem", marginBottom: "1rem" }}>Lista kursów</h1>
+    <div className="courses-container">
+      <h1 className="courses-title">Lista kursów</h1>
 
       {isAdmin && (
         <button
           onClick={() => navigate("/courses/new")}
-          style={{
-            padding: "0.5rem 1rem",
-            backgroundColor: "#007bff",
-            color: "white",
-            border: "none",
-            borderRadius: "5px",
-            marginBottom: "1rem",
-            cursor: "pointer",
-          }}
+          className="add-course-button"
         >
           ➕ Dodaj nowy kurs
         </button>
@@ -82,35 +75,20 @@ function CoursesPage({
       ) : courses.length === 0 ? (
         <p>Brak dostępnych kursów.</p>
       ) : (
-        <ul style={{ listStyle: "none", padding: 0 }}>
+        <ul className="course-list">
           {courses.map((course) => (
-            <li
-              key={course.id}
-              style={{
-                marginBottom: "1rem",
-                padding: "0.5rem",
-                borderBottom: "1px solid #ccc",
-              }}
-            >
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <li key={course.id} className="course-item">
+              <div className="course-row">
                 <div>
-                  <Link
-                    to={`/courses/${course.id}`}
-                    style={{
-                      fontWeight: "bold",
-                      fontSize: "1.1rem",
-                      textDecoration: "none",
-                      color: "#007bff",
-                    }}
-                  >
+                  <Link to={`/courses/${course.id}`} className="course-link">
                     {course.title}
                   </Link>
-                  <p style={{ margin: "0.2rem 0", color: "#555" }}>Autor: {course.author}</p>
+                  <p className="course-author">Autor: {course.author}</p>
                 </div>
 
                 {isAdmin && (
-                  <div style={{ display: "flex", gap: "1rem" }}>
-                    <Link to={`/courses/${course.id}/edit`} style={{ color: "orange", textDecoration: "none" }}>
+                  <div className="course-actions">
+                    <Link to={`/courses/${course.id}/edit`} className="edit-link">
                       ✏️ Edytuj
                     </Link>
                     <button
@@ -119,12 +97,7 @@ function CoursesPage({
                           handleDelete(course.id, course.title)
                         )
                       }
-                      style={{
-                        background: "none",
-                        border: "none",
-                        color: "red",
-                        cursor: "pointer",
-                      }}
+                      className="delete-button"
                     >
                       ❌ Usuń
                     </button>

@@ -1,8 +1,8 @@
 .navbar-container {
   width: 220px;
   height: 100vh;
-  background-color: rgb(32, 32, 32);
-  border-right: 1px solid #ccc;
+  background-color: var(--bg-sidebar);
+  border-right: 1px solid var(--border-color);
   padding: 1rem;
   box-sizing: border-box;
   position: fixed;
@@ -12,20 +12,20 @@
 
 .navbar-title {
   margin-bottom: 2rem;
-  color: #007bff;
+  color: var(--accent-color);
 }
 
 .nav-item {
   display: block;
   padding: 1rem;
   text-decoration: none;
-  color: #ffffff;
+  color: var(--text-color);
   cursor: pointer;
 }
 
 .nav-item.active {
   font-weight: bold;
-  color: #007bff;
+  color: var(--accent-color);
 }
 
 .login-link {
@@ -34,6 +34,43 @@
 
 .admin-menu {
   margin-top: 1rem;
-  border-top: 1px solid #ccc;
+  border-top: 1px solid var(--border-color);
   padding-top: 1rem;
+}
+
+/* Styl przełącznika motywu (fasolki) */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+.theme-toggle input[type="checkbox"] {
+  display: none;
+}
+
+.theme-toggle .switch {
+  position: relative;
+  width: 50px;
+  height: 24px;
+  background: var(--accent-color);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.theme-toggle .switch .slider {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  height: 20px;
+  width: 20px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+}
+
+.theme-toggle input[type="checkbox"]:checked + .switch .slider {
+  transform: translateX(26px);
 }

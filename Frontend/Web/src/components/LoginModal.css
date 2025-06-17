@@ -9,7 +9,8 @@
 }
 
 .modal-box {
-  background-color: rgb(32, 32, 32);
+  background-color: var(--card-bg);
+  color: var(--card-text);
   padding: 2rem;
   border-radius: 10px;
   width: 340px;
@@ -23,8 +24,8 @@
   padding: 0.75rem;
   border: none;
   border-radius: 4px;
-  background-color: #333;
-  color: white;
+  background-color: var(--secondary-color);
+  color: var(--text-color);
   font-size: 1rem;
 }
 
@@ -47,7 +48,11 @@
 }
 
 .modal-button.login {
-  background-color: #007bff;
+  background-color: var(--primary-color);
+}
+
+.modal-button.login:hover {
+  background-color: var(--primary-hover);
 }
 
 .modal-footer {
@@ -59,6 +64,10 @@
   font-size: 0.9rem;
   border: none;
   background: none;
-  color: #007bff;
+  color: var(--accent-color);
   cursor: pointer;
+}
+
+.modal-close:hover {
+  color: var(--accent-hover);
 }
