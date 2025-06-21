@@ -1,10 +1,10 @@
 .vs/
-Backend/app/credentials/
-*.json
+api/app/credentials/
 .env
-Backend/app/credentials/firebase_credentials.json
-Backend/app/__pycache__/
-Backend/app/routes/__pycache__/
+api/app/credentials/firebase_credentials.json
+api/app/__pycache__/
+api/app/routes/__pycache__/
 *.pyc
 venv/
 .venv/
+Frontend/Web/package-lock.json
