@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 import openai
 import os
-from app.firebase import db
+from ..firebase import db
 
 router = APIRouter()
 
