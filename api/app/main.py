@@ -9,9 +9,9 @@ from app.routes import auth, courses, chat
 
 app = FastAPI()
 
-app.include_router(auth.router, prefix="/api")
-app.include_router(courses.router, prefix="/api")
-app.include_router(chat.router, prefix="/api")
+app.include_router(auth.router)
+app.include_router(courses.router)
+app.include_router(chat.router)
 
 app.add_middleware(
     CORSMiddleware,
