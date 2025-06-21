@@ -1,6 +1,10 @@
 {
   "builds": [
     {
+      "src": "Frontend/Web/package.json",
+      "use": "@vercel/node"
+    },
+    {
       "src": "api/index.py",
       "use": "@vercel/python"
     }
