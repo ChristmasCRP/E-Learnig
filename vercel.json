@@ -4,9 +4,7 @@
     {
       "src": "Frontend/Web/package.json",
       "use": "@vercel/node",
-      "config": {
-        "maxLambdaSize": "15mb"
-      }
+      "config": { "includeFiles": ["dist/**"] }
     },
     {
       "src": "api/index.py",
@@ -17,6 +15,14 @@
     {
       "src": "/api/(.*)",
       "dest": "api/index.py"
+    },
+    {
+      "src": "/assets/(.*)",
+      "dest": "/dist/assets/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/dist/index.html"
     }
   ]
 }
