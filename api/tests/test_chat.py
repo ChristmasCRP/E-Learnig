@@ -1,4 +1,4 @@
-﻿# tests/test_chat.py
+# tests/test_chat.py
 from fastapi.testclient import TestClient
 from unittest.mock import MagicMock, patch
 

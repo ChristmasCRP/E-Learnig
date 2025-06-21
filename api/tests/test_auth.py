@@ -1,4 +1,4 @@
-﻿# tests/test_auth.py
+# tests/test_auth.py
 from fastapi.testclient import TestClient
 
 
