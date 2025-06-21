@@ -5,7 +5,7 @@ import os
 
 load_dotenv()
 
-from app.routes import auth, courses, chat
+from .routes import auth, courses, chat
 
 app = FastAPI()
 
